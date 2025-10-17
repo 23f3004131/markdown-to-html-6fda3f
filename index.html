@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown to HTML Renderer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/default.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+            line-height: 1.6;
+        }
+        pre {
+            background-color: #f8f8f8;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Markdown to HTML Renderer</h1>
+    <div id="content"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            fetch('./input.md')
+                .then(response => response.text())
+                .then(markdown => {
+                    // Convert markdown to HTML
+                    const htmlContent = marked.parse(markdown);
+
+                    // Insert HTML into the content div
+                    document.getElementById('content').innerHTML = htmlContent;
+
+                    // Highlight code blocks
+                    document.querySelectorAll('pre code').forEach((block) => {
+                        hljs.highlightElement(block);
+                    });
+                })
+                .catch(error => console.error('Error loading markdown file:', error));
+        });
+    </script>
+</body>
+</html>
